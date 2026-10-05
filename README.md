@@ -32,3 +32,6 @@ Open `index.html` directly in a browser, or serve the folder:
 ```
 python3 -m http.server 8000
 ```
+
+## Hosting
+Production deploys from `main` via Cloudflare Workers Static Assets (connected repo). Pushing to `main` triggers a deploy; `saltandspray.com` points at the Cloudflare worker.
