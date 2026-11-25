@@ -6,10 +6,11 @@ vanilla CSS/JS — no frameworks, no build step.
 
 ## Structure
 
-- `index.html` — Home / Services / Estimate panels, About + Portfolio overlays
+- `index.html` — Home / Services / Estimate panels
+- `about.html`, `portfolio.html` — About and Portfolio pages (own URLs, listed in the sitemap)
 - `privacy-policy.html` — Privacy policy
 - `css/styles.css` — All styles (design tokens in `:root`)
-- `js/app.js` — Navigation, overlays + focus trap, estimate form, before/after rails
+- `js/app.js` — Navigation, page Back links, estimate form, before/after rails
 - `assets/images/` — Logo, compressed hero backgrounds, before/after photo sets
 - `robots.txt`, `sitemap.xml`
 

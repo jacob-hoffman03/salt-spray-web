@@ -8,8 +8,8 @@
      1. Config         — business details, breakpoints, portfolio sets
      2. DOM helpers    — typed element lookups
      3. Navigation     — panel scrolling + active nav link
-     4. Overlays       — About / Portfolio dialogs, focus handling
-     5. Routing        — click delegation + #hash deep links
+     4. Pages          — Back links on the About / Portfolio pages
+     5. Routing        — in-page panel links + #hash deep links
      6. Estimate form  — phone mask, validation, SMS hand-off
      7. Portfolio      — before/after comparison rails
      8. Boot
@@ -27,8 +27,8 @@
     phone: { e164: "+19495939085", display: "(949) 593-9085" },
     /** Must match the CSS breakpoint where the snap-scrolling shell becomes normal page scroll. */
     documentScrollQuery: "(max-width: 1180px)",
-    /** Must match the overlay fade transition in styles.css. */
-    overlayFadeMs: 260,
+    /** Old in-page links that now have their own page (the inline script in index.html handles first load). */
+    legacyHashPages: /** @type {Record<string, string>} */ ({ "#about": "about.html", "#portfolio": "portfolio.html" }),
     /** Panels that have a link in the top nav. */
     navSections: ["home", "services", "book"],
     /** How much of a panel must be visible before its nav link lights up. */
@@ -73,9 +73,6 @@
     return matches;
   }
 
-  /** @param {Element} el */
-  const isRendered = (el) => el.getClientRects().length > 0;
-
   /** Hide broken decorative images instead of showing broken-image icons. */
   function hideBrokenImages() {
     queryAll("img[data-hide-on-error]", HTMLImageElement).forEach((image) => {
@@ -89,7 +86,8 @@
 
   const documentScrollMedia = window.matchMedia(CONFIG.documentScrollQuery);
   const isDocumentScroll = () => documentScrollMedia.matches;
-  const shell = query("#main", HTMLElement);
+  /** The home page's snap-scrolling container (desktop only; absent on other pages). */
+  const shell = query(".snap-shell", HTMLElement);
   const topbar = query(".topbar", HTMLElement);
   const navLinks = queryAll(".nav a", HTMLAnchorElement);
 
@@ -116,17 +114,43 @@
     });
   }
 
-  /** @param {HTMLElement | null} panel */
-  function scrollToPanel(panel) {
+  /**
+   * @param {HTMLElement | null} panel
+   * @param {ScrollBehavior} [behavior] "smooth" for clicks on this page, "instant" when arriving from another page.
+   */
+  function scrollToPanel(panel, behavior = "smooth") {
     if (!panel) return;
     if (CONFIG.navSections.includes(panel.id)) setActiveSection(panel.id);
     if (isDocumentScroll()) {
       const offset = topbar ? topbar.offsetHeight : 0;
       const top = panel.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: "smooth" });
+      window.scrollTo({ top, behavior });
     } else if (shell) {
-      shell.scrollTo({ top: panel.offsetTop, behavior: "smooth" });
+      shell.scrollTo({ top: panel.offsetTop, behavior });
     }
+  }
+
+  /**
+   * On desktop the home page scrolls inside the snap shell, which browsers don't restore
+   * on Back. Remember its position when leaving and put it back when returning via Back.
+   */
+  function initShellScrollRestore() {
+    if (!shell) return;
+    const key = "salt-spray:shell-scroll";
+    window.addEventListener("pagehide", () => {
+      try { sessionStorage.setItem(key, String(shell.scrollTop)); } catch (err) { /* storage unavailable */ }
+    });
+    const nav = performance.getEntriesByType("navigation")[0];
+    const isBackForward = nav instanceof PerformanceNavigationTiming && nav.type === "back_forward";
+    if (!isBackForward || window.location.hash || isDocumentScroll()) return;
+    let saved = null;
+    try { saved = sessionStorage.getItem(key); } catch (err) { /* storage unavailable */ }
+    if (!saved) return;
+    const top = Number(saved);
+    /* Apply after the first layout (earlier writes get reset by scroll snapping), and again once loaded. */
+    const restore = () => { if (Math.abs(shell.scrollTop - top) > 1) shell.scrollTo({ top, behavior: "instant" }); };
+    requestAnimationFrame(restore);
+    window.addEventListener("load", restore, { once: true });
   }
 
   /** Light up the nav link for whichever panel is mostly on screen. */
@@ -154,153 +178,76 @@
   }
 
   /* ============================================================
-     4. Overlays (About / Portfolio)
+     4. Pages: About / Portfolio Back links
      ============================================================ */
 
-  /**
-   * @typedef {object} Overlay
-   * @property {string} id         Element id, also the #hash that opens it.
-   * @property {HTMLElement} el
-   * @property {string} openAttr   Attribute on links that open it.
-   * @property {string} closeAttr  Attribute on links/buttons that close it.
-   * @property {number} timer      Pending fade-out timer, if any.
-   */
-
-  const siteFrame = query(".site-frame", HTMLElement);
-  const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-  /** @type {Overlay[]} */
-  const overlays = ["about", "portfolio"].flatMap((id) => {
-    const el = document.getElementById(id);
-    return el ? [{ id, el, openAttr: `data-open-${id}`, closeAttr: `data-close-${id}`, timer: 0 }] : [];
-  });
-
-  /**
-   * Element focused before an overlay opened, to restore focus on close.
-   * @type {HTMLElement | null}
-   */
-  let lastOpener = null;
-
-  const openOverlayOrNull = () => overlays.find((overlay) => !overlay.el.hidden) ?? null;
-
-  /** Make the page behind an open overlay unreachable by keyboard and screen readers. */
-  function syncBackgroundInert() {
-    siteFrame?.toggleAttribute("inert", Boolean(openOverlayOrNull()));
-  }
-
-  /**
-   * Keep Tab / Shift+Tab cycling inside the open overlay.
-   * @param {KeyboardEvent} event
-   * @param {HTMLElement} container
-   */
-  function trapTab(event, container) {
-    const focusables = queryAll(FOCUSABLE, HTMLElement, container).filter(isRendered);
-    if (!focusables.length) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus({ preventScroll: true });
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus({ preventScroll: true });
+  /** True when the visitor reached this page by clicking through from the home page. */
+  function cameFromHomePage() {
+    if (!document.referrer || window.history.length < 2) return false;
+    try {
+      const from = new URL(document.referrer);
+      return from.origin === window.location.origin && /\/(index\.html)?$/.test(from.pathname);
+    } catch (err) {
+      return false;
     }
   }
 
-  function returnFocus() {
-    if (lastOpener && document.contains(lastOpener) && isRendered(lastOpener)) {
-      lastOpener.focus({ preventScroll: true });
-    }
-    lastOpener = null;
-  }
-
-  /** @param {Overlay} overlay */
-  function openOverlay(overlay) {
-    /* Cancel a close that is still fading out, so a quick reopen is not hidden by the old timer. */
-    window.clearTimeout(overlay.timer);
-    if (!overlay.el.hidden && overlay.el.classList.contains("is-open")) return;
-    const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body) lastOpener = active;
-    overlay.el.hidden = false;
-    syncBackgroundInert();
-    document.body.classList.add("portfolio-lock");
-    requestAnimationFrame(() => {
-      overlay.el.classList.add("is-open");
-      overlay.el.setAttribute("aria-hidden", "false");
-      const scroller = query(".portfolio-scroll, .about-scroll", HTMLElement, overlay.el);
-      if (scroller) scroller.scrollTop = 0;
-      query(`[${overlay.closeAttr}]`, HTMLElement, overlay.el)?.focus({ preventScroll: true });
-    });
-  }
-
   /**
-   * @param {Overlay} overlay
-   * @param {string | null} [targetHash] Panel to scroll to once the overlay has faded out.
+   * "Back" on the About/Portfolio pages returns to the home page. When the visitor
+   * came from there, step back in history instead, so the browser restores the
+   * exact scroll position (and usually the cached page) for a seamless return.
    */
-  function closeOverlay(overlay, targetHash = null) {
-    if (overlay.el.hidden) return;
-    overlay.el.classList.remove("is-open");
-    overlay.el.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("portfolio-lock");
-    window.clearTimeout(overlay.timer);
-    overlay.timer = window.setTimeout(() => {
-      overlay.el.hidden = true;
-      syncBackgroundInert();
-      if (targetHash) scrollToPanel(panelFromHash(targetHash));
-      returnFocus();
-    }, CONFIG.overlayFadeMs);
-  }
-
-  function initOverlayKeys() {
-    document.addEventListener("keydown", (event) => {
-      const overlay = openOverlayOrNull();
-      if (!overlay) return;
-      if (event.key === "Tab") trapTab(event, overlay.el);
-      if (event.key === "Escape") closeOverlay(overlay);
+  function initBackLinks() {
+    queryAll("a[data-page-back]", HTMLAnchorElement).forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (!cameFromHomePage()) return;
+        event.preventDefault();
+        window.history.back();
+      });
     });
   }
 
   /* ============================================================
-     5. Routing: link clicks + #hash deep links
+     5. Routing: in-page panel links + #hash deep links
      ============================================================ */
 
-  /** One delegated handler for every in-page link and overlay open/close control. */
-  function initLinkRouting() {
-    const closeSelector = overlays.map((overlay) => `[${overlay.closeAttr}]`).join(", ");
+  /** One delegated handler for every "#panel" link on the home page. */
+  function initPanelLinks() {
     document.addEventListener("click", (event) => {
       if (!(event.target instanceof Element)) return;
-      const trigger = event.target.closest(`a[href^='#']${closeSelector ? `, ${closeSelector}` : ""}`);
-      if (!trigger) return;
-      const href = trigger.getAttribute("href");
-
-      const closing = overlays.find((overlay) => trigger.hasAttribute(overlay.closeAttr));
-      if (closing) {
-        event.preventDefault();
-        closeOverlay(closing, href);
-        return;
-      }
-
-      const opening = overlays.find((overlay) => trigger.hasAttribute(overlay.openAttr) || href === `#${overlay.id}`);
-      if (opening) {
-        event.preventDefault();
-        openOverlay(opening);
-        return;
-      }
-
-      const panel = panelFromHash(href);
-      if (panel) {
-        event.preventDefault();
-        scrollToPanel(panel);
-      }
+      const link = event.target.closest("a[href^='#']");
+      const panel = panelFromHash(link ? link.getAttribute("href") : null);
+      if (!panel) return;
+      event.preventDefault();
+      scrollToPanel(panel);
     });
   }
 
-  /** Support links like saltandspray.com/#portfolio or #book. */
-  function openFromHash() {
+  /**
+   * Support links like saltandspray.com/#book, and forward the old #about / #portfolio links.
+   * @param {ScrollBehavior} [behavior]
+   */
+  function openFromHash(behavior = "smooth") {
     const hash = window.location.hash;
-    const overlay = overlays.find((item) => hash === `#${item.id}`);
-    if (overlay) openOverlay(overlay);
-    else scrollToPanel(panelFromHash(hash));
+    const page = CONFIG.legacyHashPages[hash];
+    if (page) window.location.replace(page);
+    else scrollToPanel(panelFromHash(hash), behavior);
+  }
+
+  /**
+   * Arriving with a #section link (e.g. "Free Estimate" from the About page): jump straight there.
+   * Fonts and images can still shift the layout while loading, so settle on the section again once
+   * the page has loaded, unless the visitor has already started scrolling.
+   */
+  function initLandingOnHash() {
+    if (!window.location.hash) return;
+    openFromHash("instant");
+    const scroller = isDocumentScroll() || !shell ? null : shell;
+    const position = () => (scroller ? scroller.scrollTop : window.scrollY);
+    const landedAt = position();
+    window.addEventListener("load", () => {
+      if (Math.abs(position() - landedAt) <= 2) openFromHash("instant");
+    }, { once: true });
   }
 
   /* ============================================================
@@ -522,12 +469,13 @@
      ============================================================ */
 
   hideBrokenImages();
-  initLinkRouting();
-  initOverlayKeys();
+  initPanelLinks();
+  initBackLinks();
   initActiveNavHighlight();
   initPhoneMask();
   initEstimateForm();
   initBeforeAfterRails();
-  openFromHash();
-  window.addEventListener("hashchange", openFromHash);
+  initShellScrollRestore();
+  initLandingOnHash();
+  window.addEventListener("hashchange", () => openFromHash());
 })();

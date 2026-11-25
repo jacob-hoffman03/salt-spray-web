@@ -492,13 +492,13 @@ body.portfolio-lock { overflow: hidden !important; }
 .portfolio-dialog { display: grid; max-height: 100dvh !important; height: 100dvh !important; overflow: hidden !important; grid-template-rows: var(--topbar-h) minmax(0, 1fr) !important; }
 .portfolio-compare-section { margin: 0px auto !important; width: 100% !important; max-width: none !important; display: grid !important; justify-items: center !important; gap: clamp(1.2rem, 2.1vw, 1.8rem) !important; padding: clamp(1.9rem, 3.8vw, 3.45rem) clamp(1rem, 3vw, 3rem) clamp(1.8rem, 3.5vw, 3.2rem) !important; background: transparent !important; border-top: 0px !important; box-shadow: none !important; }
 .portfolio-compare-heading { margin: 0px auto clamp(0.25rem, 1vw, 0.65rem) !important; width: min(100%, 1100px) !important; margin-inline: auto !important; margin-bottom: clamp(0.15rem, 0.8vw, 0.45rem) !important; display: grid !important; justify-items: center !important; text-align: center !important; gap: clamp(0.5rem, 0.9vw, 0.75rem) !important; }
-.portfolio-compare-heading h2 { color: var(--white) !important; font-family: var(--font-display) !important; font-size: clamp(2.65rem, 6vw, 6.35rem) !important; font-weight: var(--weight-heading) !important; line-height: 0.88 !important; letter-spacing: -0.055em !important; text-transform: uppercase !important; text-align: center !important; }
-.portfolio-compare-heading h2::after { content: "" !important; display: block !important; width: clamp(48px, 4.5vw, 78px) !important; height: 2px !important; margin: clamp(0.58rem, 0.9vw, 0.82rem) auto 0px !important; background: var(--red-soft) !important; }
+.portfolio-compare-heading h2, .portfolio-compare-heading h1 { color: var(--white) !important; font-family: var(--font-display) !important; font-size: clamp(2.65rem, 6vw, 6.35rem) !important; font-weight: var(--weight-heading) !important; line-height: 0.88 !important; letter-spacing: -0.055em !important; text-transform: uppercase !important; text-align: center !important; }
+.portfolio-compare-heading h2::after, .portfolio-compare-heading h1::after { content: "" !important; display: block !important; width: clamp(48px, 4.5vw, 78px) !important; height: 2px !important; margin: clamp(0.58rem, 0.9vw, 0.82rem) auto 0px !important; background: var(--red-soft) !important; }
 .portfolio-compare-heading p { margin: 0.5rem auto 0px !important; max-width: 72ch !important; color: rgba(255, 255, 255, 0.72) !important; font-size: clamp(0.82rem, 0.95vw, 1rem) !important; line-height: 1.45 !important; }
 .portfolio-compare-panel-head p { margin: 0.42rem 0px 0px !important; color: rgba(255, 255, 255, 0.76) !important; font-size: clamp(0.78rem, 0.88vw, 0.9rem) !important; line-height: 1.5 !important; max-width: 68ch !important; }
 @media (max-width: 1180px) {
   .portfolio-dialog { grid-template-rows: auto minmax(0px, 1fr) !important; }
-  .portfolio-compare-heading h2 { font-size: clamp(2.45rem, 8vw, 5rem) !important; }
+  .portfolio-compare-heading h2, .portfolio-compare-heading h1 { font-size: clamp(2.45rem, 8vw, 5rem) !important; }
 }
 .portfolio-fake-header { min-height: var(--topbar-h) !important; grid-template-columns: auto minmax(0px, 1fr) auto !important; }
 .portfolio-estimate { display: inline-flex !important; justify-self: end !important; }
@@ -526,7 +526,7 @@ body.portfolio-lock { overflow: hidden !important; }
   .portfolio-scroll { overflow-y: auto !important; }
   .portfolio-compare-section { padding: 0.95rem 0.72rem 1.25rem !important; gap: 0.9rem !important; }
   .portfolio-compare-heading { gap: 0.42rem !important; margin-bottom: 0.05rem !important; }
-  .portfolio-compare-heading h2 { font-size: clamp(2rem, 10.8vw, 3.2rem) !important; line-height: 0.9 !important; }
+  .portfolio-compare-heading h2, .portfolio-compare-heading h1 { font-size: clamp(2rem, 10.8vw, 3.2rem) !important; line-height: 0.9 !important; }
   .portfolio-compare-heading p { max-width: 38ch !important; font-size: 0.74rem !important; line-height: 1.38 !important; }
   .portfolio-compare-panel-head { display: grid !important; grid-template-columns: 1fr auto !important; align-items: start !important; gap: 0.6rem !important; margin-bottom: 0.55rem !important; }
   .portfolio-compare-panel-head h3 { max-width: none !important; font-size: clamp(1.45rem, 7.7vw, 2.15rem) !important; line-height: 0.96 !important; }
@@ -622,8 +622,8 @@ body.portfolio-lock { overflow: hidden !important; }
 .about-aside::before { content: ""; position: absolute; inset: -18px; background: var(--hero-img) center/cover no-repeat; filter: blur(var(--panel-bg-blur)); transform: scale(var(--hero-bg-scale)); z-index: 0; }
 .about-aside::after { content: ""; position: absolute; inset: 0px; background: linear-gradient(180deg, rgba(10, 31, 51, 0.28), rgba(10, 31, 51, 0.82)); z-index: 0; }
 .about-aside > * { position: relative; z-index: 1; }
-.about-aside h2 { max-width: 520px; font-size: clamp(2.4rem, 5.4vw, 5.65rem); letter-spacing: -0.02em; line-height: 0.96; }
-.about-aside h2 em { display: block; font-family: var(--font-accent); font-style: normal; font-weight: 900; color: var(--white); letter-spacing: -0.04em; text-transform: uppercase; margin: 0.04em 0px; }
+.about-aside h2, .about-aside h1 { max-width: 520px; font-size: clamp(2.4rem, 5.4vw, 5.65rem); letter-spacing: -0.02em; line-height: 0.96; }
+.about-aside h2 em, .about-aside h1 em { display: block; font-family: var(--font-accent); font-style: normal; font-weight: 900; color: var(--white); letter-spacing: -0.04em; text-transform: uppercase; margin: 0.04em 0px; }
 .about-main { min-width: 0px; display: grid; gap: clamp(1rem, 1.5vw, 1.5rem); color: var(--ink); }
 .about-heading { align-items: end; }
 .about-copy { min-height: 0px; display: grid; gap: clamp(0.78rem, 1vw, 1rem); color: rgba(13, 36, 64, 0.78); font-size: clamp(0.88rem, 0.98vw, 1rem); line-height: 1.74; scrollbar-width: thin; scrollbar-color: rgba(155, 18, 40, 0.45) rgba(13, 36, 64, 0.08); }
@@ -649,7 +649,7 @@ body.portfolio-lock { overflow: hidden !important; }
   .book .estimate-intro h2 { font-size: clamp(2.2rem, 9vw, 4.7rem) !important; }
 }
 @media (max-width: 760px) {
-  .about-aside h2 { font-size: clamp(2.25rem, 14vw, 4.2rem); }
+  .about-aside h2, .about-aside h1 { font-size: clamp(2.25rem, 14vw, 4.2rem); }
   .service-checklist { grid-template-columns: 1fr; }
   .book .estimate-intro h2 { font-size: clamp(2rem, 12.8vw, 3.4rem) !important; }
 }
@@ -839,4 +839,17 @@ body.portfolio-lock { overflow: hidden !important; }
   /* Aug 2026 size: easier to tap on phones */
   .book .service-checklist label { min-height: 42px !important; }
   .book .estimate-contact .field textarea { min-height: 120px !important; max-height: 260px !important; }
+}
+
+/* ============================================================
+   About + Portfolio pages (about.html, portfolio.html)
+   They reuse the old overlay markup and classes, shown open as a
+   full page; the page heading is an h1 (aliased above with h2).
+   ============================================================ */
+a.about-back, a.portfolio-back { display: inline-flex; align-items: center; justify-content: center; }
+/* Same slide-and-fade the overlays used when they opened. */
+.about-overlay.is-page.is-open, .portfolio-overlay.is-page.is-open { animation: subpageIn 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes subpageIn {
+  0% { opacity: 0; transform: translateY(18px) scale(0.985); }
+  100% { opacity: 1; transform: translateY(0px) scale(1); }
 }

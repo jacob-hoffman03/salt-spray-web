@@ -17,6 +17,8 @@
   <meta name="geo.region" content="US-CA">
   <meta name="keywords" content="wood staining Dana Point, wood restoration Orange County, wood refinishing Southern California, front door restoration, exterior wood stain, custom stain matching, deck staining Orange County, cabinet refinishing Dana Point, painting company Dana Point">
   <title>Wood Staining &amp; Restoration Specialists | Salt &amp; Spray</title>
+  <!-- Old links like saltandspray.com/#portfolio now live on their own pages. -->
+  <script>(function () { var pages = { "#about": "about.html", "#portfolio": "portfolio.html" }; var to = pages[location.hash]; if (to) location.replace(to); })();</script>
 
   <!-- Social cards -->
   <meta property="og:title" content="Wood Staining &amp; Restoration Specialists | Salt &amp; Spray">
@@ -197,8 +199,10 @@
   <link rel="preload" as="image" fetchpriority="high" href="assets/images/logo.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&amp;family=Merriweather+Sans:wght@400;500;600;700;800&amp;display=swap">
 
-  <!-- Main stylesheet -->
+  <!-- Main stylesheet; fetch the About/Portfolio pages early so they open instantly -->
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="prefetch" href="about.html">
+  <link rel="prefetch" href="portfolio.html">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -264,8 +268,8 @@
           <svg class="pill-icon" aria-hidden="true"><use href="#i-phone"/></svg>
           Call / Text
         </a>
-        <a class="pill-link header-secondary about-link" data-open-about href="#about">About</a>
-        <a class="pill-link portfolio-link" data-open-portfolio href="#portfolio">Portfolio</a>
+        <a class="pill-link header-secondary about-link" href="about.html">About</a>
+        <a class="pill-link portfolio-link" href="portfolio.html">Portfolio</a>
         <a class="pill-link primary" href="#book">Free Estimate</a>
       </div>
     </header>
@@ -512,8 +516,8 @@
           <a href="#home">Home</a>
           <a href="#services">Services</a>
           <a href="#book">Estimate</a>
-          <a data-open-about href="#about">About</a>
-          <a data-open-portfolio href="#portfolio">Portfolio</a>
+          <a href="about.html">About</a>
+          <a href="portfolio.html">Portfolio</a>
         </nav>
         <div class="footer-contact">
           <a href="tel:+19495939085">(949) 593-9085</a>
@@ -528,147 +532,7 @@
     </main>
   </div>
 
-  <!-- About overlay -->
-  <div class="about-overlay" id="about" hidden aria-hidden="true">
-    <div class="about-dialog" role="dialog" aria-modal="true" aria-labelledby="about-heading">
-      <header class="about-fake-header">
-        <button class="about-back" data-close-about type="button" aria-label="Back to main site">Back</button>
-        <a class="about-brand" data-close-about href="#home" aria-label="Salt and Spray Home">
-          <span class="brand-mark">
-            <img class="logo-invert" src="assets/images/logo.png" alt="Salt &amp; Spray logo" width="44" height="44" decoding="async" data-hide-on-error>
-          </span>
-          <span class="brand-text">
-            <strong>Salt &amp; Spray</strong>
-            <small>About / Values</small>
-          </span>
-        </a>
-        <a class="pill-link primary about-estimate" data-close-about href="#book">Free Estimate</a>
-      </header>
-      <div class="about-scroll">
-        <section class="about-feature">
-          <div class="about-aside">
-            <div>
-              <span class="eyebrow">About Salt &amp; Spray</span>
-              <h2 id="about-heading">Pride. <em>Trust.</em> Craft.</h2>
-            </div>
-            <p class="aside-note">
-              A locally owned Dana Point company built around craftsmanship, accountability,
-              clear communication, and respect for the homes we are invited into.
-            </p>
-            <div class="aside-stat">
-              <strong>OC</strong>
-              <span>Proudly serving Dana Point and Coastal Orange County.</span>
-            </div>
-          </div>
-          <div class="about-main">
-            <div class="section-heading about-heading">
-              <h2>About Us</h2>
-              <p>
-                Homeowners deserve more than a contractor. They deserve a trusted partner
-                who treats their home with professionalism, respect, and genuine pride.
-              </p>
-            </div>
-            <div class="about-value-strip" aria-label="Company values">
-              <span>Craftsmanship</span>
-              <span>Accountability</span>
-              <span>Communication</span>
-              <span>Respect</span>
-            </div>
-            <div class="about-copy">
-              <p>Salt &amp; Spray Painting &amp; Faux Finishes was built on the belief that homeowners deserve more than a contractor. They deserve a trusted partner who treats their home with professionalism, respect, and genuine pride in the finished product.</p>
-              <p>We are a locally owned company based in Dana Point, proudly serving Coastal Orange County. What began as a vision, a commitment to craftsmanship, and countless hours spent earning the trust of one homeowner at a time has grown into a company built almost entirely through referrals, relationships, and a reputation for doing things the right way.</p>
-              <p>Wood staining and restoration are a central part of our craft. We restore entry doors, trim, railings, decks, cabinetry, and other architectural wood by addressing the existing finish first, carefully preparing the surface, matching or developing the stain color, and selecting a protective finish suited to the wood and its exposure.</p>
-              <p>This company was not created simply to paint homes. It was created to help restore something that has slowly disappeared from much of the construction industry: pride in craftsmanship, accountability, exceptional customer service, and the commitment to doing the job right even when no one is watching.</p>
-              <p>Too many homeowners have experienced contractors who rush through estimates, communicate poorly, leave projects unfinished, or cut corners to save time. We believe that should never be considered normal.</p>
-              <p>From the moment you contact Salt &amp; Spray, our goal is to provide an experience that feels different. Our process is intentional. We begin by understanding your goals, your home, and your vision before creating a detailed proposal tailored specifically to your project.</p>
-              <p>We take the time to educate you on products, preparation methods, finishes, and long-term maintenance so you can make informed decisions with confidence. Once your project begins, you receive clear communication, dedicated project management, and a team that values professionalism as much as craftsmanship.</p>
-              <p>Every brush stroke, every repaired surface, every custom stain, and every faux finish reflects our commitment to excellence. We do not believe in shortcuts because shortcuts rarely create lasting results. Instead, we believe in proper preparation, premium materials, proven application methods, and attention to the details that many companies overlook.</p>
-              <p>Our work is about more than creating beautiful spaces. It is about protecting one of the biggest investments you will ever make, increasing the longevity of your finishes, preserving the character of your home, and delivering results you will be proud to see every day.</p>
-              <p>As a family-owned business, we understand the importance of home. It is where birthdays are celebrated, families gather, children grow up, and memories are made. We never lose sight of the responsibility that comes with being invited into those spaces.</p>
-              <p>Our team shares one common purpose: to leave every project better than we found it and every client more confident in their decision to hire us.</p>
-              <p>We are not trying to be the biggest painting company in California. We are striving to become the company that sets the standard for what professionalism, craftsmanship, and customer care should look like in our industry.</p>
-              <p>That is who we are. That is what Salt &amp; Spray stands for.</p>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </div>
-
-  <!-- Portfolio overlay -->
-  <div class="portfolio-overlay" id="portfolio" hidden aria-hidden="true">
-    <div class="portfolio-dialog" role="dialog" aria-modal="true" aria-labelledby="portfolio-heading">
-      <header class="portfolio-fake-header">
-        <button class="portfolio-back" data-close-portfolio type="button" aria-label="Back to main site">Back</button>
-        <a class="portfolio-brand" data-close-portfolio href="#home" aria-label="Salt and Spray Home">
-          <span class="brand-mark">
-            <img class="logo-invert" src="assets/images/logo.png" alt="Salt &amp; Spray logo" width="44" height="44" decoding="async" data-hide-on-error>
-          </span>
-          <span class="brand-text">
-            <strong>Salt &amp; Spray</strong>
-            <small>Portfolio / Results</small>
-          </span>
-        </a>
-        <a class="pill-link primary portfolio-estimate" data-close-portfolio href="#book">Free Estimate</a>
-      </header>
-      <div class="portfolio-scroll">
-        <section class="portfolio-compare-section" aria-label="Before and after project comparisons">
-          <div class="portfolio-compare-heading">
-            <h2 id="portfolio-heading">Proof Through Process</h2>
-            <p>Wood restoration, staining, and painting results from Salt &amp; Spray projects across Southern Orange County.</p>
-          </div>
-          <div class="portfolio-link-row portfolio-social-row" aria-label="Portfolio external links">
-            <a class="portfolio-panel-link is-google" href="https://www.google.com/search?q=Salt+%26+Spray+Painting+%26+Faux+Finishes+Dana+Point+reviews" target="_blank" rel="noopener">
-              <span class="portfolio-brand-icon google" aria-hidden="true"><span class="google-g-letter">G</span></span>
-              <span>Google Reviews</span>
-            </a>
-            <span class="portfolio-link-slit" aria-hidden="true"></span>
-            <a class="portfolio-panel-link is-tiktok" href="https://www.tiktok.com/@salt_and_spray" target="_blank" rel="noopener">
-              <span class="portfolio-brand-icon tiktok" aria-hidden="true">
-                <svg viewBox="0 0 24 24" focusable="false"><path d="M15.2 3.5c.55 3.1 2.25 4.98 5.05 5.35v3.22c-1.9-.06-3.55-.66-4.92-1.78v5.9c0 3.1-2.02 5.25-5.08 5.25-2.86 0-5.04-1.86-5.04-4.55 0-2.92 2.33-4.78 5.64-4.4v3.25c-1.38-.28-2.3.18-2.3 1.15 0 .82.7 1.36 1.62 1.36 1.08 0 1.8-.66 1.8-2.12V3.5h3.23Z"/></svg>
-              </span>
-              <span>TikTok</span>
-            </a>
-          </div>
-
-          <article class="portfolio-compare-panel is-stains" aria-label="Wood staining and restoration before and after comparisons">
-            <div class="portfolio-compare-panel-head">
-              <div>
-                <h3>Wood Staining &amp; Restoration</h3>
-                <p>Specialized refinishing for doors, trim, railings, decks, and coastal woodwork — from stripping, sanding, and repairs through custom stain color and the final protective clear coat.</p>
-                <div class="portfolio-panel-count" aria-label="6 before and after sets shown"><strong>6</strong><span>Before / After</span></div>
-              </div>
-              <div class="portfolio-compare-actions">
-                <button class="ba-scroll-btn" type="button" data-ba-scroll="stains" data-ba-dir="-1" aria-label="Previous wood restoration comparison">‹</button>
-                <button class="ba-scroll-btn" type="button" data-ba-scroll="stains" data-ba-dir="1" aria-label="Next wood restoration comparison">›</button>
-              </div>
-            </div>
-            <div class="before-after-rail" data-ba-rail="stains" aria-label="Scrollable wood staining and restoration before and after comparisons"></div>
-          </article>
-
-          <article class="portfolio-compare-panel is-painting" aria-label="Painting before and after comparisons">
-            <div class="portfolio-compare-panel-head">
-              <div>
-                <h3>Painting</h3>
-                <p>Interior and exterior painting focused on protection, detailed prep, smooth application, and clean finished results.</p>
-                <div class="portfolio-panel-count" aria-label="27 before and after sets shown"><strong>27</strong><span>Before / After</span></div>
-              </div>
-              <div class="portfolio-compare-actions">
-                <button class="ba-scroll-btn" type="button" data-ba-scroll="painting" data-ba-dir="-1" aria-label="Previous painting comparison">‹</button>
-                <button class="ba-scroll-btn" type="button" data-ba-scroll="painting" data-ba-dir="1" aria-label="Next painting comparison">›</button>
-              </div>
-            </div>
-            <div class="before-after-rail" data-ba-rail="painting" aria-label="Scrollable painting before and after comparisons"></div>
-          </article>
-        </section>
-        <div class="portfolio-bottom-bar" role="presentation">
-          <p>Keep The Shine On The Coast Line.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Site interactions and portfolio behavior -->
+  <!-- Site interactions -->
   <script src="js/app.js"></script>
 </body>
 </html>
