@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Same settings Cloudflare auto-generated for this Worker at build time;
+  // committed so every deploy uses a known config. Files listed in
+  // .assetsignore are excluded from the published site.
+  "name": "salt-spray-web",
+  "compatibility_date": "2026-10-01",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "."
+  }
+}

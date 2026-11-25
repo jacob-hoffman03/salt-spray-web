@@ -1,0 +1,14 @@
+# Files Cloudflare must NOT publish. wrangler.jsonc serves this whole folder
+# ("assets.directory": "."), so anything not listed here becomes a public URL.
+.git
+.gitignore
+.assetsignore
+.claude
+.wrangler
+.dev.vars*
+.env*
+.DS_Store
+Thumbs.db
+node_modules
+README.md
+wrangler.jsonc
